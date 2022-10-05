@@ -45,7 +45,7 @@ public class Aluno {
 	
 	@OneToMany(mappedBy="aluno")
 	private Set<Emprestimo> emprestimos;
-
+	
 	public Set<Emprestimo> getEmprestimos() {
 		return emprestimos;
 	}
