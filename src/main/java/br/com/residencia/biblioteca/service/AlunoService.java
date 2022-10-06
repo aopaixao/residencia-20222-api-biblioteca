@@ -36,7 +36,6 @@ public class AlunoService {
 		alunoExistenteNoBanco.setComplemento(aluno.getComplemento()); //SN
 		alunoExistenteNoBanco.setCpf(aluno.getCpf()); //123456789
 		alunoExistenteNoBanco.setDataNascimento(aluno.getDataNascimento()); //...
-		alunoExistenteNoBanco.setEmprestimos(aluno.getEmprestimos());
 		alunoExistenteNoBanco.setLogradouro(aluno.getLogradouro());
 		alunoExistenteNoBanco.setNome(aluno.getNome());
 		alunoExistenteNoBanco.setNumeroLogradouro(aluno.getNumeroLogradouro());
