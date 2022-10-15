@@ -4,14 +4,6 @@ public class EditoraDTO {
 	private Integer codigoEditora;
 	private String nome;
 
-	public EditoraDTO() {
-	}
-
-	public EditoraDTO(Integer codigoEditora, String nome) {
-		this.codigoEditora = codigoEditora;
-		this.nome = nome;
-	}
-
 	public Integer getCodigoEditora() {
 		return codigoEditora;
 	}

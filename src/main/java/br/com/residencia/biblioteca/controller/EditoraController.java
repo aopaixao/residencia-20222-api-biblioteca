@@ -65,6 +65,14 @@ public class EditoraController {
 		return new ResponseEntity<>(editoraService.updateEditora(editora, id),
 				HttpStatus.OK);
 	}
+
+	@PutMapping("/dto/{id}")
+	public ResponseEntity<EditoraDTO> updateEditoraDTO(@RequestBody EditoraDTO editoraDTO, 
+			@PathVariable Integer id){
+		return new ResponseEntity<>(editoraService.updateEditoraDTO(editoraDTO, id),
+				HttpStatus.OK);
+	}
+	
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Editora> deleteEditora(@PathVariable Integer id) {
