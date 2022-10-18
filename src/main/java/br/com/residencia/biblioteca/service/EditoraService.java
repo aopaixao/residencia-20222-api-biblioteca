@@ -1,12 +1,29 @@
 package br.com.residencia.biblioteca.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.residencia.biblioteca.dto.ConsultaCnpjDTO;
 import br.com.residencia.biblioteca.dto.EditoraDTO;
+import br.com.residencia.biblioteca.dto.FreeImageHostDTO;
 import br.com.residencia.biblioteca.dto.LivroDTO;
 import br.com.residencia.biblioteca.entity.Editora;
 import br.com.residencia.biblioteca.entity.Livro;
@@ -24,6 +41,11 @@ public class EditoraService {
 	@Autowired
 	LivroService livroService;
 	
+	@Value("${freeimage.host.url}")
+	private String freeImageHostUrl;
+	
+	@Value("${freeimage.host.key}")
+    private String freeImageHostKey;
 	
 	public List<Editora> getAllEditoras(){
 		return editoraRepository.findAll();
@@ -53,6 +75,15 @@ public class EditoraService {
 	}
 	
 	public Editora saveEditora(Editora editora) {
+		return editoraRepository.save(editora);
+	}
+	
+	public Editora saveEditoraFromApi(String cnpj) {
+		ConsultaCnpjDTO consultaCnpjDTO = consultaCnpjApiExterna(cnpj);
+		
+		Editora editora = new Editora();
+		editora.setNome(consultaCnpjDTO.getNome());
+		
 		return editoraRepository.save(editora);
 	}
 
@@ -117,6 +148,21 @@ public class EditoraService {
 		
 		//return editoraRepository.save(editora);
 	}
+	
+	
+	public ConsultaCnpjDTO consultaCnpjApiExterna(String cnpj) {
+		RestTemplate restTemplate = new RestTemplate();
+		String uri = "https://receitaws.com.br/v1/cnpj/{cnpj}";
+		
+		Map<String,String> params = new HashMap<String, String>();
+		params.put("cnpj", cnpj);
+		
+		ConsultaCnpjDTO consultaCnpjDTO = restTemplate.getForObject(uri, ConsultaCnpjDTO.class , params);
+		
+		return consultaCnpjDTO;
+	}
+	
+	
 
 	public Editora deleteEditora(Integer id) {
 		editoraRepository.deleteById(id);
@@ -146,5 +192,42 @@ public class EditoraService {
 		
 		return listaEditoraDTO; 
 	}
+	
+	public ResponseEntity<FreeImageHostDTO> saveEditoraComFoto(@RequestPart("editora") String editora,
+			@RequestPart("source") MultipartFile file) {
+		
+		Editora editoraFromJson = convertEditoraFromStringJson(editora);
+		//Editora novaEditora= editoraRepository.save(editoraFromJson);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		
+		MultiValueMap<String, Object> body
+		  = new LinkedMultiValueMap<>();
+		body.add("source", file);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		String serverUrl = freeImageHostUrl + freeImageHostKey;
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity
+		 = new HttpEntity<>(body, headers);
 
+		ResponseEntity<FreeImageHostDTO> response = restTemplate
+		  .postForEntity(serverUrl, requestEntity, FreeImageHostDTO.class);
+
+		return response;		
+	}
+	
+	private Editora convertEditoraFromStringJson(String editoraJson) {
+		Editora editora = new Editora();
+		
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			editora = objectMapper.readValue(editoraJson, Editora.class);
+		} catch (IOException err) {
+			System.out.printf("Ocorreu um erro ao tentar converter a string json para um instância da entidade Editora", err.toString());
+		}
+		
+		return editora;
+	}
 }
