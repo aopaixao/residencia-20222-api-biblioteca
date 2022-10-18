@@ -13,7 +13,7 @@ import br.com.residencia.biblioteca.repository.AlunoRepository;
 public class AlunoService {
 	@Autowired
 	AlunoRepository alunoRepository;
-	
+
 	public List<Aluno> getAllAlunos(){
 		return alunoRepository.findAll();
 	}
