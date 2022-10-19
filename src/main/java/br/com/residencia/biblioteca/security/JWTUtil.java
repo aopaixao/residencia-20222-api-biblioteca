@@ -22,7 +22,7 @@ import br.com.residencia.biblioteca.entity.User;
 public class JWTUtil {
 
     // Le a propriedade jwt-secret a partir do application.properties
-    @Value("${jwt-secret}")
+    @Value("${jwt_secret}")
     private String secret;
 
     // Le a propriedade jwt-subject a partir do application.properties

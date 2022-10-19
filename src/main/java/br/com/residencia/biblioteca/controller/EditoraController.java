@@ -1,5 +1,6 @@
 package br.com.residencia.biblioteca.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,10 +123,11 @@ public class EditoraController {
 	
 	@PostMapping(value = "/editora-com-foto", consumes = { MediaType.APPLICATION_JSON_VALUE,
 			 MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<FreeImageHostDTO> saveEditoraComFoto(@RequestPart("editora") String editora,
-			@RequestPart("source") MultipartFile file) {
+	public ResponseEntity<String> saveEditoraComFoto(@RequestPart("editora") String editora,
+			@RequestPart("source") MultipartFile file) throws IOException {
 		
-		ResponseEntity<FreeImageHostDTO> freeImgDTO = editoraService.saveEditoraComFoto(editora, file);
+		//ResponseEntity<FreeImageHostDTO> freeImgDTO = editoraService.saveEditoraComFoto(editora, file);
+		ResponseEntity<String> freeImgDTO = editoraService.saveEditoraComFoto(editora, file);
 		
 		return new ResponseEntity<>(freeImgDTO.getBody(), HttpStatus.OK);
 		

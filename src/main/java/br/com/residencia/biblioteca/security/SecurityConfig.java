@@ -22,12 +22,12 @@ import br.com.residencia.biblioteca.repository.UserRepository;
 @EnableWebSecurity 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired private
-    UserRepository userRepo;
-    @Autowired private
-    JWTFilter filter;
-    @Autowired private
-    UserDetailsServiceImpl uds;
+    @Autowired 
+    private UserRepository userRepo;
+    @Autowired 
+    private JWTFilter filter;
+    @Autowired 
+    private UserDetailsServiceImpl uds;
 
     //Metodo encarregado de configurar a seguranca da API
     @Override

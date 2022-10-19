@@ -20,7 +20,7 @@ public class User {
 	@Column(name = "user_nome")
     private String usuarioNome;
     
-	@Column(name = "user_email")
+	@Column(name = "user_email", unique=true)
 	private String userEmail;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
