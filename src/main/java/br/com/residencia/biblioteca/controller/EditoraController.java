@@ -3,6 +3,9 @@ package br.com.residencia.biblioteca.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.residencia.biblioteca.dto.ConsultaCnpjDTO;
 import br.com.residencia.biblioteca.dto.EditoraDTO;
-import br.com.residencia.biblioteca.dto.imgbb.ImgBBDTO;
 import br.com.residencia.biblioteca.entity.Editora;
 import br.com.residencia.biblioteca.exception.NoSuchElementFoundException;
 import br.com.residencia.biblioteca.service.EditoraService;
@@ -55,7 +57,7 @@ public class EditoraController {
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Editora> getEditoraById(@PathVariable Integer id) {
+	public ResponseEntity<Editora> getEditoraById(@PathVariable @NotBlank Integer id) {
 		Editora editora = editoraService.getEditoraById(id);
 		if(null != editora)
 			return new ResponseEntity<>(editora,
@@ -76,7 +78,7 @@ public class EditoraController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Editora> saveEditora(@RequestBody Editora editora) {
+	public ResponseEntity<Editora> saveEditora(@Valid @RequestBody Editora editora) {
 		return new ResponseEntity<>(editoraService.saveEditora(editora),
 				HttpStatus.CREATED);
 	}
@@ -125,17 +127,6 @@ public class EditoraController {
 					HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/editora-com-foto", consumes = { MediaType.APPLICATION_JSON_VALUE,
-			 MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<EditoraDTO> saveEditoraComFoto(@RequestPart("editora") String editora,
-			@RequestPart("source") MultipartFile file) throws IOException {
-		
-		EditoraDTO editoraDTO = editoraService.saveFotoImgBB(editora, file);
-		
-		if (null == editoraDTO)
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-		else
-			return new ResponseEntity<>(editoraDTO, HttpStatus.CREATED);
-	}
+
 
 }
