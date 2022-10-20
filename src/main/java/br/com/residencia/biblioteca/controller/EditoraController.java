@@ -22,6 +22,7 @@ import br.com.residencia.biblioteca.dto.ConsultaCnpjDTO;
 import br.com.residencia.biblioteca.dto.EditoraDTO;
 import br.com.residencia.biblioteca.dto.imgbb.ImgBBDTO;
 import br.com.residencia.biblioteca.entity.Editora;
+import br.com.residencia.biblioteca.exception.NoSuchElementFoundException;
 import br.com.residencia.biblioteca.service.EditoraService;
 
 @RestController
@@ -38,8 +39,12 @@ public class EditoraController {
 
 	@GetMapping("/dto")
 	public ResponseEntity<List<EditoraDTO>> getAllEditorasDTO(){
-		return new ResponseEntity<>(editoraService.getAllEditorasDTO(),
-				HttpStatus.OK);
+		List<EditoraDTO> listEditoraDTO = editoraService.getAllEditorasDTO();
+		if(listEditoraDTO.isEmpty())
+			throw new NoSuchElementFoundException("Não foram encontradas Entidades");
+		else
+			return new ResponseEntity<>(editoraService.getAllEditorasDTO(),
+					HttpStatus.OK);
 	}
 
 	@GetMapping("/editora-livros")
@@ -56,8 +61,7 @@ public class EditoraController {
 			return new ResponseEntity<>(editora,
 					HttpStatus.OK);
 		else
-			return new ResponseEntity<>(editora,
-					HttpStatus.NOT_FOUND);
+			throw new NoSuchElementFoundException("Não foi encontrada Entidade com o id: " + id);
 	}
 
 	@GetMapping("/consulta-cnpj/{cnpj}")
