@@ -95,6 +95,21 @@ public class EditoraController {
 				HttpStatus.CREATED);
 	}
 	
+	@PostMapping(value = "/cadastro-editora-com-foto",
+			     consumes = { MediaType.APPLICATION_JSON_VALUE, 
+			    		      MediaType.MULTIPART_FORM_DATA_VALUE}
+	)
+	public ResponseEntity<EditoraDTO> saveEditoraFoto(
+			@RequestPart("editora") String editoraTxt,
+			@RequestPart("filename") MultipartFile file
+	) throws IOException{
+		EditoraDTO editoraDTO = editoraService.saveEditoraFoto(editoraTxt, file);
+		if(editoraDTO == null)
+			return new ResponseEntity<>(editoraDTO, HttpStatus.BAD_REQUEST);
+		else
+			return new ResponseEntity<>(editoraDTO, HttpStatus.CREATED);
+	}
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<Editora> updateEditora(@RequestBody Editora editora, 
 			@PathVariable Integer id){
