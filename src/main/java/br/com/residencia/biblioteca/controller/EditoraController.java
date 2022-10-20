@@ -127,7 +127,8 @@ public class EditoraController {
 			@RequestPart("source") MultipartFile file) throws IOException {
 		
 		//ResponseEntity<FreeImageHostDTO> freeImgDTO = editoraService.saveEditoraComFoto(editora, file);
-		ResponseEntity<String> freeImgDTO = editoraService.saveEditoraComFoto(editora, file);
+		//ResponseEntity<String> freeImgDTO = editoraService.saveEditoraComFoto(editora, file);
+		ResponseEntity<String> freeImgDTO = editoraService.saveFotoImgBB(editora, file);
 		
 		return new ResponseEntity<>(freeImgDTO.getBody(), HttpStatus.OK);
 		
