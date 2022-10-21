@@ -34,12 +34,21 @@ public class LivroController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Livro> getLivroById(@PathVariable Integer id) {
-		Livro livro = livroService.getLivroById(id);
+		Livro livro = new Livro();
+		
+		try {
+			livro = livroService.getLivroById(id);
+		}catch(Exception ex) {
+			throw new NoSuchElementFoundException("Não foi encontrado livro com o id "+id);
+		}
+		/*
 		if(livro == null)
 			//throw new NoSuchElementException("Não foi encontrado livro com o id "+id);
 			throw new NoSuchElementFoundException("Não foi encontrado livro com o id "+id);
 		else
 			return new ResponseEntity<>(livro, HttpStatus.OK);
+		*/
+		return new ResponseEntity<>(livro, HttpStatus.OK);
 	}
 	
 	@PostMapping

@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -31,6 +32,7 @@ public class Aluno {
 	@Column(name = "datanascimento")
 	private Instant dataNascimento;
 
+	@NotBlank(message = "O cpf é obrigatório.")
 	@Column(name = "cpf")
 	private String cpf;
 
