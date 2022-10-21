@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.residencia.biblioteca.dto.ConsultaCnpjDTO;
 import br.com.residencia.biblioteca.dto.EditoraDTO;
 import br.com.residencia.biblioteca.entity.Editora;
-import br.com.residencia.biblioteca.exception.NoSuchElementFoundException;
 import br.com.residencia.biblioteca.service.EditoraService;
 
 @RestController
@@ -39,15 +38,6 @@ public class EditoraController {
 				HttpStatus.OK);
 	}
 
-	@GetMapping("/dto")
-	public ResponseEntity<List<EditoraDTO>> getAllEditorasDTO(){
-		List<EditoraDTO> listEditoraDTO = editoraService.getAllEditorasDTO();
-		if(listEditoraDTO.isEmpty())
-			throw new NoSuchElementFoundException("Não foram encontradas Entidades");
-		else
-			return new ResponseEntity<>(editoraService.getAllEditorasDTO(),
-					HttpStatus.OK);
-	}
 
 	@GetMapping("/editora-livros")
 	public ResponseEntity<List<EditoraDTO>> getAllEditorasLivrosDTO(){
@@ -63,9 +53,11 @@ public class EditoraController {
 			return new ResponseEntity<>(editora,
 					HttpStatus.OK);
 		else
-			throw new NoSuchElementFoundException("Não foi encontrada Entidade com o id: " + id);
+			return new ResponseEntity<>(editora,
+					HttpStatus.NOT_FOUND);
 	}
-
+	
+	
 	@GetMapping("/consulta-cnpj/{cnpj}")
 	public ResponseEntity<ConsultaCnpjDTO> consultaCnpjApiExterna(@PathVariable String cnpj) {
 		ConsultaCnpjDTO consultaCnpjDTO = editoraService.consultaCnpjApiExterna(cnpj);
