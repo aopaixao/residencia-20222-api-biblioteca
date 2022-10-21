@@ -2,19 +2,10 @@ package br.com.residencia.biblioteca.exception;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
 	private final int status;
 	private final String message;
 	private List<String> details;
-
-	public ErrorResponse(int status, String message) {
-		super();
-		this.status = status;
-		this.message = message;
-	}
 
 	public ErrorResponse(int status, String message, List<String> details) {
 		super();
@@ -23,12 +14,10 @@ public class ErrorResponse {
 		this.details = details;
 	}
 
-	public int getStatus() {
-		return status;
-	}
-
-	public String getMessage() {
-		return message;
+	public ErrorResponse(int status, String message) {
+		super();
+		this.status = status;
+		this.message = message;
 	}
 
 	public List<String> getDetails() {
@@ -39,4 +28,11 @@ public class ErrorResponse {
 		this.details = details;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public String getMessage() {
+		return message;
+	}
 }
