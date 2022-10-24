@@ -141,7 +141,7 @@ public class EditoraService {
 					ImgBBDTO.class);
 			
 			imgDTO = response.getBody();
-			System.out.println("ImgBBDTO: " + imgDTO.getData().toString());
+			//System.out.println("ImgBBDTO: " + imgDTO.getData().toString());
 		} catch (HttpClientErrorException e) {
 			e.printStackTrace();
 		}
