@@ -22,9 +22,20 @@ public class AlunoService {
 		return alunoRepository.findById(id).orElse(null);
 	}
 	
-	public Aluno saveAluno(Aluno aluno) {
+	public Aluno saveAluno(Aluno aluno) throws Exception {
+		/**
+		String cpf = aluno.getCpf();
+		if(!validaAlgCpf(cpf))
+			throw new Exception("O cpf não é válido");
+		/**/
 		return alunoRepository.save(aluno);
 	}
+	/**
+	private Boolean validaAlgCpf(String cpf) {
+		//implementaria a validação do algoritmo do cpf
+		return false;
+	}
+	/**/
 	
 	public Aluno updateAluno(Aluno aluno, Integer id) {
 		//Aluno alunoExistenteNoBanco = alunoRepository.findById(id).get();
